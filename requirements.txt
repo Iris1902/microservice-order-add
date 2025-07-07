@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+strawberry-graphql
+boto3
+python-dotenv
