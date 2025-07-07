@@ -1,6 +1,5 @@
 import boto3
 import os
-import random
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -14,13 +13,14 @@ dynamodb = boto3.resource(
 
 table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
 
-def create_cart(user_id):
-    cart_id = random.randint(1_000_000, 9_999_999) 
-    table.put_item(
-        Item={
-            "id": cart_id, 
-            "user_id": user_id,
-            "product_ids": []
-        }
+def add_product_to_order(order_id, product_id):
+    response = table.update_item(
+        Key={"id": order_id},
+        UpdateExpression="SET product_ids = list_append(if_not_exists(product_ids, :empty_list), :p)",
+        ExpressionAttributeValues={
+            ":p": [product_id],
+            ":empty_list": []
+        },
+        ReturnValues="UPDATED_NEW"
     )
-    return cart_id
+    return response
