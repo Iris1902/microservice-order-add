@@ -1,10 +1,9 @@
 import strawberry
-from app.services.dynamodb import create_cart
+from app.services.dynamodb import add_product_to_order
 
 @strawberry.type
-class Cart:
-    id: str  # Cambiado a 'id' para coincidir con DynamoDB
-    user_id: str
+class Order:
+    id: str
     product_ids: list[str]
 
 @strawberry.type
@@ -16,8 +15,7 @@ class Query:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def create_cart(self, user_id: str) -> Cart:
-        cart_id = create_cart(user_id)
-        return Cart(id=cart_id, user_id=user_id, product_ids=[])
+    def add_product_to_order(self, order_id: str, product_id: str) -> bool:
+        return add_product_to_order(order_id, product_id)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
