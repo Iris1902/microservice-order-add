@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expone el puerto de la aplicación
-EXPOSE 4001
+EXPOSE 4002
 
 # Comando para ejecutar el servicio
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "4001"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "4002"]
